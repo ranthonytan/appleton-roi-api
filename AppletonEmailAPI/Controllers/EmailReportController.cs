@@ -136,7 +136,8 @@ namespace AppletonEmailAPI.Controllers
                 string outputDocumentDirectory = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "OutputDocument\\";
                 logger.Trace(outputDocumentDirectory);
 
-                string server = "INETMAIL.EMRSN.NET";
+                //string server = "INETMAIL.EMRSN.NET";
+                string server = "smtp.azurecomm.net";
                 SmtpClient client = null;
                 MailMessage mail = null;
 
