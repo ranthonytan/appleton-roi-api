@@ -12,6 +12,8 @@ using OfficeOpenXml;
 using System.Web.Http.Cors;
 using GemBox.Spreadsheet;
 using NLog;
+using Azure;
+using Azure.Communication.Email;
 
 
 namespace AppletonEmailAPI.Controllers
@@ -184,6 +186,16 @@ namespace AppletonEmailAPI.Controllers
                 client.Timeout = 10000;
                 client.Credentials = new NetworkCredential(smtpAuthUsername, smtpAuthPassword);
                 await client.SendMailAsync(mail);
+
+                string connectionString = Environment.GetEnvironmentVariable("COMMUNICATION_SERVICES_CONNECTION_STRING");
+                var emailClient = new EmailClient(connectionString);
+                EmailSendOperation emailSendOperation = emailClient.Send(
+                    WaitUntil.Completed,
+                    senderAddress: sender,
+                    recipientAddress: recipient,
+                    subject: subject,
+                    htmlContent: EmailBody,
+                    plainTextContent: EmailBody);
             }
             catch (Exception ex)
             {
