@@ -12,9 +12,6 @@ using OfficeOpenXml;
 using System.Web.Http.Cors;
 using GemBox.Spreadsheet;
 using NLog;
-using Azure;
-using Azure.Communication.Email;
-
 
 namespace AppletonEmailAPI.Controllers
 {
