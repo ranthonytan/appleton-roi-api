@@ -120,8 +120,6 @@ namespace AppletonEmailAPI.Controllers
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         public async System.Threading.Tasks.Task<string> SendEmailToUserAsync(EmailReport objEmail)//async Task<string> sendEmail([FromBody] QuoteExportInfo quoteInfo)
         {
-            
-
             try
             {
                 //"http://w3staging.emersonprocess.com"
@@ -140,21 +138,10 @@ namespace AppletonEmailAPI.Controllers
                 string server = "smtp.azurecomm.net";
                 string smtpAuthUsername = "appleton-roi-comm|40ea5243-76d4-4b0e-a05b-ba2000e974f3|eb06985d-06ca-4a17-81da-629ab99f6505";
                 string smtpAuthPassword = "ZZt8Q~06HgYiBweQkDXPFLdROy1J9s3LKFEQbcr~";
-                SmtpClient client = null;
-                MailMessage mail = null;
-
-                var outputDocPath=SaveAsPdf(templateDoc);
-                //var outputDocPath = ConvertExcelAsMemoryStream(templateDoc);
-                MailAddress from = new MailAddress("no-reply@emerson.com");
-                MailAddress to = new MailAddress(objEmail.Customer.EmailAddress);
-                MailAddress bcc = new MailAddress("APPGRP.CALC@Emerson.com");
-               // MailAddress bcc = new MailAddress("Tapas.paul@Emerson.com");
-                mail = new MailMessage(from, to);
-                if(objEmail.isBCCAllowed)
-                {
-                    mail.Bcc.Add(bcc);
-                }             
-                mail.Subject = "Appleton Light Savings Report";
+                string sender = "no-reply@emerson.com";
+                string recipient = objEmail.Customer.EmailAddress;
+                string bcc = "APPGRP.CALC@Emerson.com";
+                string subject = "Appleton Light Savings Report";
                 string EmailBody = "<html><body style='font-family:Arial, Helvetica, sans-serif!important'>Dear " + objEmail.Customer.CustomerName;
                 EmailBody += "<br/><p>Please find attached your Appleton™ Lighting calculator savings report.</p>";
                 EmailBody += "<p>The attached document details the maintenance, energy and environmental savings achieved";
@@ -164,47 +151,44 @@ namespace AppletonEmailAPI.Controllers
                 EmailBody += " <p>Contact Customer Service: <a href='mailto:CustomerService.AppletonGroup@emerson.com'>CustomerService.AppletonGroup@emerson.com</a></p></br>";
                 EmailBody += "<p>Best Regards</p><p>Emerson</p></br>";
                 EmailBody += "<p><b>Disclaimer: </b>The information provided by the AppletonTM Lighting Retrofit Calculator is intended for use as a guide only. The calculations produced by this calculator are only estimates, and there are no guarantees that users of AppletonTM products will realize any electricity savings. The results presented by this calculator are hypothetical and may not reflect the actual performance or electricity savings at your facility.</p></body></html></br>";
+                SmtpClient client = null;
+                MailMessage mail = null;
+
+                var outputDocPath=SaveAsPdf(templateDoc);
+                //var outputDocPath = ConvertExcelAsMemoryStream(templateDoc);
+                MailAddress from = new MailAddress(sender);
+                MailAddress to = new MailAddress(recipient);
+                MailAddress bcc = new MailAddress(bcc);
+                //MailAddress bcc = new MailAddress("Tapas.paul@Emerson.com");
+                mail = new MailMessage(from, to);
+                if(objEmail.isBCCAllowed)
+                {
+                    mail.Bcc.Add(bcc);
+                }             
+                mail.Subject = subject;
                 mail.Body = EmailBody;
                 mail.IsBodyHtml = true;
                 System.IO.DirectoryInfo dInfo = new System.IO.DirectoryInfo(outputDocumentDirectory);
-               // foreach (FileInfo file in dInfo.GetFiles())
-               // {
-                        mail.Attachments.Add(new Attachment(outputDocPath));
-                
+                //foreach (FileInfo file in dInfo.GetFiles())
+                //{
+                    mail.Attachments.Add(new Attachment(outputDocPath));
                 //}
-                // mail.Attachments.Add(new Attachment(outputDocumentDirectory + fileName.Split('.')[0] + ".pdf"));
-                //client = new SmtpClient(server);
-                //client.Port = 25;
-                //client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                //client.UseDefaultCredentials = false;
-                //client.EnableSsl = false;
-                //client.Timeout = 10000;
-                //await client.SendMailAsync(mail);
-
-                string sender = "no-reply@emerson.com";
-                string recipient = objEmail.Customer.EmailAddress;
-                string subject = "Appleton Light Savings Report";
-                string body = "<html><body style='font-family:Arial, Helvetica, sans-serif!important'>Dear " + objEmail.Customer.CustomerName;
-                body += "<br/><p>Please find attached your Appleton™ Lighting calculator savings report.</p>";
-                body += "<p>The attached document details the maintenance, energy and environmental savings achieved";
-                body += " by upgrading to Emerson’s Appleton™ LED luminaires.</p></br>";
-                body += " <p>Learn more about Appleton LED lighting solutions by Emerson at <a href='http://www.emerson.com/en-us/automation/brands/appleton/led-lighting'>masteringled.com</a></p>";
-                body += "<p>Search for a local sales representative: <a href='http://www.emersonindustrial.com/en-US/egselectricalgroup/aboutus/wheretobuy/Pages/wheretobuy.aspx'>Where To Buy</a></p>";
-                body += " <p>Contact Customer Service: <a href='mailto:CustomerService.AppletonGroup@emerson.com'>CustomerService.AppletonGroup@emerson.com</a></p></br>";
-                body += "<p>Best Regards</p><p>Emerson</p></br>";
-                body += "<p><b>Disclaimer: </b>The information provided by the AppletonTM Lighting Retrofit Calculator is intended for use as a guide only. The calculations produced by this calculator are only estimates, and there are no guarantees that users of AppletonTM products will realize any electricity savings. The results presented by this calculator are hypothetical and may not reflect the actual performance or electricity savings at your facility.</p></body></html></br>";
+                //mail.Attachments.Add(new Attachment(outputDocumentDirectory + fileName.Split('.')[0] + ".pdf"));
                 client = new SmtpClient(server);
+                //client.Port = 25;
                 client.Port = 587;
-                client.Credentials = new NetworkCredential(smtpAuthUsername, smtpAuthPassword);
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                //client.EnableSsl = false;
                 client.EnableSsl = true;
-                var message = new MailMessage(sender, recipient, subject, body);
-                client.Send(message);
-                Console.WriteLine("The email was successfully sent using Smtp.");
+                client.Timeout = 10000;
+                client.Credentials = new NetworkCredential(smtpAuthUsername, smtpAuthPassword);
+                //await client.SendMailAsync(mail);
+                client.Send(mail);
             }
             catch (Exception ex)
             {
             }
-
             return "success this success";
         }
 
