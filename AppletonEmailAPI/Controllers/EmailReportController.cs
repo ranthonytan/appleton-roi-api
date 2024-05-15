@@ -193,19 +193,16 @@ namespace AppletonEmailAPI.Controllers
                 body += " <p>Contact Customer Service: <a href='mailto:CustomerService.AppletonGroup@emerson.com'>CustomerService.AppletonGroup@emerson.com</a></p></br>";
                 body += "<p>Best Regards</p><p>Emerson</p></br>";
                 body += "<p><b>Disclaimer: </b>The information provided by the AppletonTM Lighting Retrofit Calculator is intended for use as a guide only. The calculations produced by this calculator are only estimates, and there are no guarantees that users of AppletonTM products will realize any electricity savings. The results presented by this calculator are hypothetical and may not reflect the actual performance or electricity savings at your facility.</p></body></html></br>";
-                client = new SmtpClient(server)
-                {
-                    Port = 587;
-                    Credentials = new NetworkCredential(smtpAuthUsername, smtpAuthPassword);
-                    EnableSsl = true;
-                };
+                client = new SmtpClient(server);
+                client.Port = 587
+                client.Credentials = new NetworkCredential(smtpAuthUsername, smtpAuthPassword);
+                client.EnableSsl = true;
                 var message = new MailMessage(sender, recipient, subject, body);
                 client.Send(message);
                 Console.WriteLine("The email was successfully sent using Smtp.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Smtp send failed with the exception:" + ex.Message);
             }
 
             return "success this success";
