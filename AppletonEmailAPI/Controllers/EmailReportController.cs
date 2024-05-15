@@ -173,21 +173,39 @@ namespace AppletonEmailAPI.Controllers
                 
                 //}
                 // mail.Attachments.Add(new Attachment(outputDocumentDirectory + fileName.Split('.')[0] + ".pdf"));
-                client = new SmtpClient(server);
+                //client = new SmtpClient(server);
                 //client.Port = 25;
-                client.Port = 587;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
+                //client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                //client.UseDefaultCredentials = false;
                 //client.EnableSsl = false;
-                client.EnableSsl = true;
-                client.Credentials = new NetworkCredential(smtpAuthUsername, smtpAuthPassword);
-                client.Timeout = 10000;
-                await client.SendMailAsync(mail);
+                //client.Timeout = 10000;
+                //await client.SendMailAsync(mail);
 
-
+                string sender = "no-reply@emerson.com";
+                string recipient = objEmail.Customer.EmailAddress;
+                string subject = "Appleton Light Savings Report";
+                string body = "<html><body style='font-family:Arial, Helvetica, sans-serif!important'>Dear " + objEmail.Customer.CustomerName;
+                body += "<br/><p>Please find attached your Appleton™ Lighting calculator savings report.</p>";
+                body += "<p>The attached document details the maintenance, energy and environmental savings achieved";
+                body += " by upgrading to Emerson’s Appleton™ LED luminaires.</p></br>";
+                body += " <p>Learn more about Appleton LED lighting solutions by Emerson at <a href='http://www.emerson.com/en-us/automation/brands/appleton/led-lighting'>masteringled.com</a></p>";
+                body += "<p>Search for a local sales representative: <a href='http://www.emersonindustrial.com/en-US/egselectricalgroup/aboutus/wheretobuy/Pages/wheretobuy.aspx'>Where To Buy</a></p>";
+                body += " <p>Contact Customer Service: <a href='mailto:CustomerService.AppletonGroup@emerson.com'>CustomerService.AppletonGroup@emerson.com</a></p></br>";
+                body += "<p>Best Regards</p><p>Emerson</p></br>";
+                body += "<p><b>Disclaimer: </b>The information provided by the AppletonTM Lighting Retrofit Calculator is intended for use as a guide only. The calculations produced by this calculator are only estimates, and there are no guarantees that users of AppletonTM products will realize any electricity savings. The results presented by this calculator are hypothetical and may not reflect the actual performance or electricity savings at your facility.</p></body></html></br>";
+                client = new SmtpClient(server)
+                {
+                    Port = 587;
+                    Credentials = new NetworkCredential(smtpAuthUsername, smtpAuthPassword);
+                    EnableSsl = true;
+                };
+                var message = new MailMessage(sender, recipient, subject, body);
+                client.Send(message);
+                Console.WriteLine("The email was successfully sent using Smtp.");
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Smtp send failed with the exception: {ex.Message}.");
             }
 
             return "success this success";
