@@ -140,7 +140,7 @@ namespace AppletonEmailAPI.Controllers
                 string smtpAuthPassword = "ZZt8Q~06HgYiBweQkDXPFLdROy1J9s3LKFEQbcr~";
                 string sender = "no-reply@emerson.com";
                 string recipient = objEmail.Customer.EmailAddress;
-                string bcc = "APPGRP.CALC@Emerson.com";
+                string bccGroup = "APPGRP.CALC@Emerson.com";
                 string subject = "Appleton Light Savings Report";
                 string EmailBody = "<html><body style='font-family:Arial, Helvetica, sans-serif!important'>Dear " + objEmail.Customer.CustomerName;
                 EmailBody += "<br/><p>Please find attached your Appleton™ Lighting calculator savings report.</p>";
@@ -158,7 +158,7 @@ namespace AppletonEmailAPI.Controllers
                 //var outputDocPath = ConvertExcelAsMemoryStream(templateDoc);
                 MailAddress from = new MailAddress(sender);
                 MailAddress to = new MailAddress(recipient);
-                MailAddress bcc = new MailAddress(bcc);
+                MailAddress bcc = new MailAddress(bccGroup);
                 //MailAddress bcc = new MailAddress("Tapas.paul@Emerson.com");
                 mail = new MailMessage(from, to);
                 if(objEmail.isBCCAllowed)
@@ -183,11 +183,11 @@ namespace AppletonEmailAPI.Controllers
                 client.EnableSsl = true;
                 client.Timeout = 10000;
                 client.Credentials = new NetworkCredential(smtpAuthUsername, smtpAuthPassword);
-                //await client.SendMailAsync(mail);
-                client.Send(mail);
+                await client.SendMailAsync(mail);
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Exception caught: {0}", ex.ToString());
             }
             return "success this success";
         }
