@@ -175,8 +175,8 @@ namespace AppletonEmailAPI.Controllers
                 //}
                 //mail.Attachments.Add(new Attachment(outputDocumentDirectory + fileName.Split('.')[0] + ".pdf"));
                 client = new SmtpClient(server);
-                //client.Port = 25;
-                client.Port = 587;
+                client.Port = 25;
+                //client.Port = 587;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
                 //client.EnableSsl = false;
