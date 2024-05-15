@@ -205,7 +205,7 @@ namespace AppletonEmailAPI.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Smtp send failed with the exception: {ex.Message}.");
+                Console.WriteLine("Smtp send failed with the exception:" + ex.Message);
             }
 
             return "success this success";
