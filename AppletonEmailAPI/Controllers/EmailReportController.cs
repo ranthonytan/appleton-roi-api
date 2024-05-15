@@ -186,20 +186,9 @@ namespace AppletonEmailAPI.Controllers
                 client.Timeout = 10000;
                 client.Credentials = new NetworkCredential(smtpAuthUsername, smtpAuthPassword);
                 await client.SendMailAsync(mail);
-
-                string connectionString = Environment.GetEnvironmentVariable("COMMUNICATION_SERVICES_CONNECTION_STRING");
-                var emailClient = new EmailClient(connectionString);
-                EmailSendOperation emailSendOperation = emailClient.Send(
-                    WaitUntil.Completed,
-                    senderAddress: sender,
-                    recipientAddress: recipient,
-                    subject: subject,
-                    htmlContent: EmailBody,
-                    plainTextContent: EmailBody);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception caught: {0}", ex.ToString());
             }
             return "success this success";
         }
