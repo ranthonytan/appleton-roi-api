@@ -134,7 +134,7 @@ namespace AppletonEmailAPI.Controllers
                 logger.Trace(outputDocumentDirectory);
 
                 //string server = "INETMAIL.EMRSN.NET";
-                string server = "smtp.emerson.net";
+                string server = "smtp.azurecomm.net";
                 string smtpAuthUsername = "appleton-roi-comm|40ea5243-76d4-4b0e-a05b-ba2000e974f3|eb06985d-06ca-4a17-81da-629ab99f6505";
                 string smtpAuthPassword = "ZZt8Q~06HgYiBweQkDXPFLdROy1J9s3LKFEQbcr~";
                 string sender = "DoNotReply@c0475bcf-fe32-4f2e-bc45-b7a12ff2775b.azurecomm.net";
@@ -174,14 +174,14 @@ namespace AppletonEmailAPI.Controllers
                 //}
                 //mail.Attachments.Add(new Attachment(outputDocumentDirectory + fileName.Split('.')[0] + ".pdf"));
                 client = new SmtpClient(server);
-                client.Port = 25;
-                //client.Port = 587;
+                //client.Port = 25;
+                client.Port = 587;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
-                client.EnableSsl = false;
-                //client.EnableSsl = true;
+                //client.EnableSsl = false;
+                client.EnableSsl = true;
                 client.Timeout = 10000;
-                //client.Credentials = new NetworkCredential(smtpAuthUsername, smtpAuthPassword);
+                client.Credentials = new NetworkCredential(smtpAuthUsername, smtpAuthPassword);
                 await client.SendMailAsync(mail);
             }
             catch (Exception ex)
