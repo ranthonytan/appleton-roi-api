@@ -137,7 +137,7 @@ namespace AppletonEmailAPI.Controllers
                 string server = "smtp.emerson.net";
                 string smtpAuthUsername = "appleton-roi-comm|40ea5243-76d4-4b0e-a05b-ba2000e974f3|eb06985d-06ca-4a17-81da-629ab99f6505";
                 string smtpAuthPassword = "ZZt8Q~06HgYiBweQkDXPFLdROy1J9s3LKFEQbcr~";
-                string sender = "no-reply@emerson.com";
+                string sender = "DoNotReply@c0475bcf-fe32-4f2e-bc45-b7a12ff2775b.azurecomm.net";
                 string recipient = objEmail.Customer.EmailAddress;
                 string bccGroup = "APPGRP.CALC@Emerson.com";
                 string subject = "Appleton Light Savings Report";
