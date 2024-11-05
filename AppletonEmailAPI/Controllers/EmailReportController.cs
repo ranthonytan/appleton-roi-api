@@ -136,7 +136,7 @@ namespace AppletonEmailAPI.Controllers
                 //string server = "INETMAIL.EMRSN.NET";
                 string server = "smtp.azurecomm.net";
                 string smtpAuthUsername = "appleton-roi-comm|40ea5243-76d4-4b0e-a05b-ba2000e974f3|eb06985d-06ca-4a17-81da-629ab99f6505";
-                string smtpAuthPassword = "ZZt8Q~06HgYiBweQkDXPFLdROy1J9s3LKFEQbcr~";
+                string smtpAuthPassword = "mb08Q~7l8md~_EPiDOQGUybSgNDIuIm9VKgZbddJ";
                 string sender = "DoNotReply@f2a44c7a-32cb-452f-8eb7-39ef2c643d17.azurecomm.net";
                 string recipient = objEmail.Customer.EmailAddress;
                 string bccGroup = "APPGRP.CALC@Emerson.com";
